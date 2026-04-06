@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enkorwithus - Investor Relations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --olive: #3E3C1F;
+      --olive-dark: #2E2D16;
+      --gold: #F8E585;
+      --gold-dim: #D4C46E;
+      --cream: #FFF9E8;
+      --white: #FFFFFF;
+      --text: #2C2A14;
+      --text-light: #6B6944;
+      --green-dark: #2D5A1E;
+      --green-mid: #3A6B28;
+      --brown: #6C5439;
+      --brown-dark: #4A3A28;
+      --red: #C0392B;
+      --chart-bg: #3A3820;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', 'Noto Sans KR', -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--cream);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+
+    /* ── Top Header Bar ── */
+    .top-header {
+      background: var(--olive);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo-area { display: flex; align-items: center; gap: 8px; }
+    .logo-icon { font-size: 24px; }
+    .logo-text { font-size: 22px; font-weight: 800; color: var(--white); letter-spacing: -0.5px; }
+    .header-tagline { font-size: 14px; color: var(--gold); font-weight: 600; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .series-badge {
+      background: var(--gold);
+      color: var(--olive);
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .lang-switch {
+      display: flex; background: rgba(255,255,255,0.15);
+      border-radius: 16px; padding: 2px;
+    }
+    .lang-btn {
+      padding: 4px 12px; border: none; background: transparent;
+      font-size: 12px; font-weight: 600; cursor: pointer;
+      border-radius: 14px; transition: all 0.2s; color: rgba(255,255,255,0.6);
+    }
+    .lang-btn.active { background: var(--gold); color: var(--olive); }
+
+    /* ── Stats Bar ── */
+    .stats-bar {
+      background: var(--olive-dark);
+      display: flex;
+      border-bottom: 2px solid var(--gold);
+    }
+    .stats-bar .stat {
+      flex: 1; text-align: center; padding: 14px 8px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .stats-bar .stat:last-child { border-right: none; }
+    .stats-bar .stat-val { font-size: 20px; font-weight: 800; color: var(--white); }
+    .stats-bar .stat-lbl { font-size: 10px; color: var(--gold-dim); margin-top: 2px; }
+
+    /* ── Page Body ── */
+    .page { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Section Headers (fieldset-style) ── */
+    .sec-title {
+      font-size: 14px; font-weight: 800; color: var(--olive);
+      text-transform: uppercase; letter-spacing: 1px;
+      border-bottom: 2px solid var(--olive);
+      padding-bottom: 6px; margin-bottom: 16px; margin-top: 32px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .sec-title::before {
+      content: ''; display: block; width: 4px; height: 16px;
+      background: var(--gold); border-radius: 2px;
+    }
+
+    /* ── Executive Summary ── */
+    .exec-summary { margin-top: 28px; }
+    .exec-line { margin-bottom: 14px; font-size: 14px; line-height: 1.7; color: var(--text); }
+    .exec-line .label-problem { color: var(--red); font-weight: 700; }
+    .exec-line .label-solution { color: var(--green-dark); font-weight: 700; }
+    .exec-line .label-revenue { font-weight: 700; color: var(--text); }
+    .exec-line strong { font-weight: 700; }
+
+    /* ── Traction Chart ── */
+    .chart-wrap {
+      background: var(--chart-bg); border-radius: 8px;
+      padding: 20px; margin-top: 8px;
+    }
+    .chart-label { font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 16px; }
+    .chart-area { display: flex; align-items: flex-end; gap: 6px; height: 160px; }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+    .bar-val { font-size: 9px; font-weight: 700; color: var(--white); margin-bottom: 3px; min-height: 14px; }
+    .bar {
+      width: 100%; border-radius: 3px 3px 0 0;
+      transition: height 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      height: 0;
+    }
+    .bar.low { background: #5A6B3A; }
+    .bar.mid { background: #6B8B3A; }
+    .bar.high { background: #3A5A2A; }
+    .bar.top { background: #2A4A1A; }
+    .bar-lbl { font-size: 9px; color: rgba(255,255,255,0.45); margin-top: 6px; }
+
+    /* ── Unit Economics ── */
+    .unit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #ddd; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+    .unit-cell { background: var(--white); padding: 16px 20px; }
+    .unit-cell .u-label { font-size: 11px; color: var(--text-light); font-weight: 500; }
+    .unit-cell .u-value { font-size: 32px; font-weight: 800; color: var(--text); margin: 2px 0; }
+    .unit-cell .u-sub { font-size: 11px; color: var(--text-light); }
+
+    /* ── Market ── */
+    .market-row { display: flex; gap: 12px; }
+    .market-card {
+      flex: 1; border-radius: 8px; padding: 16px; text-align: center; color: var(--white);
+    }
+    .market-card.tam { background: var(--green-dark); }
+    .market-card.sam { background: var(--olive); }
+    .market-card.som { background: var(--brown-dark); }
+    .market-card .m-tag { font-size: 10px; font-weight: 700; opacity: 0.7; letter-spacing: 1px; }
+    .market-card .m-val { font-size: 28px; font-weight: 800; margin: 4px 0; }
+    .market-card .m-lbl { font-size: 11px; opacity: 0.7; }
+
+    /* ── Competitive Moats ── */
+    .moats-list { list-style: none; }
+    .moats-list li {
+      font-size: 14px; line-height: 1.7; color: var(--text);
+      padding: 4px 0; padding-left: 20px; position: relative;
+    }
+    .moats-list li::before {
+      content: '\25CF'; position: absolute; left: 0; color: var(--green-dark); font-size: 10px; top: 7px;
+    }
+    .moats-list li strong { font-weight: 700; }
+
+    /* ── The Ask ── */
+    .ask-box {
+      background: var(--white); border: 1px solid #ddd;
+      border-radius: 8px; padding: 20px; margin-top: 8px;
+    }
+    .ask-amount { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .ask-amount span { background: var(--gold); padding: 2px 8px; border-radius: 4px; }
+    .ask-detail { font-size: 13px; color: var(--text); line-height: 1.8; }
+    .ask-detail strong { font-weight: 700; }
+
+    /* ── Team ── */
+    .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #ddd; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+    .team-cell { background: var(--white); padding: 16px 12px; text-align: center; }
+    .team-cell .t-name { font-size: 14px; font-weight: 700; color: var(--text); }
+    .team-cell .t-role { font-size: 11px; font-weight: 600; color: var(--green-dark); margin: 2px 0 6px; }
+    .team-cell .t-bio { font-size: 11px; color: var(--text-light); line-height: 1.4; }
+
+    /* ── Backed By ── */
+    .backed { margin-top: 32px; margin-bottom: 8px; }
+    .backed-header { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 12px; }
+    .backed-header span { font-weight: 400; color: var(--text-light); }
+    .backed-line { font-size: 13px; color: var(--text); line-height: 1.8; }
+    .backed-line .b-label { color: var(--red); font-weight: 600; font-style: italic; }
+
+    /* ── Bottom Stats Bar ── */
+    .bottom-stats {
+      background: var(--olive-dark);
+      display: flex; margin-top: 32px;
+    }
+    .bottom-stats .bs {
+      flex: 1; text-align: center; padding: 14px 8px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .bottom-stats .bs:last-child { border-right: none; }
+    .bottom-stats .bs-val { font-size: 22px; font-weight: 800; color: var(--gold); }
+    .bottom-stats .bs-lbl { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--olive); padding: 16px 24px; text-align: center;
+    }
+    .footer-line { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.8; }
+    .footer-line a { color: var(--gold); text-decoration: none; }
+    .footer-links { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 4px; }
+    .footer-links a { color: var(--gold); text-decoration: none; }
+
+    /* ── Video Section (from planning doc) ── */
+    .video-wrap {
+      margin-top: 12px;
+      position: relative; width: 100%; padding-bottom: 56.25%;
+      border-radius: 8px; overflow: hidden;
+    }
+    .video-wrap img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+    .video-play {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 64px; height: 64px; background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(6px); border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.3); cursor: pointer; z-index: 2;
+      display: flex; align-items: center; justify-content: center; padding: 0;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .video-play:hover { transform: translate(-50%, -50%) scale(1.1); background: rgba(0,0,0,0.7); }
+    .video-play svg { width: 22px; height: 26px; margin-left: 3px; }
+    .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.12); z-index: 1; }
+
+    /* ── Responsive: Tablet ── */
+    @media (max-width: 768px) {
+      .header-tagline { display: none; }
+      .stats-bar .stat-val { font-size: 18px; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── Responsive: Mobile ── */
+    @media (max-width: 480px) {
+      /* Header - 한줄 유지, 로고 + 우측(badge+lang) */
+      .top-header {
+        padding: 10px 12px;
+        flex-wrap: nowrap;
+      }
+      .logo-area svg { width: 110px; height: auto; }
+      .series-badge { padding: 5px 10px; font-size: 11px; white-space: nowrap; }
+      .lang-btn { padding: 3px 8px; font-size: 10px; }
+      .header-right { gap: 6px; }
+
+      /* Stats Bar - 3+2 배치 */
+      .stats-bar { flex-wrap: wrap; }
+      .stats-bar .stat {
+        padding: 10px 4px;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+      .stats-bar .stat:nth-child(-n+3) { flex: 1 1 33.33%; }
+      .stats-bar .stat:nth-child(3) { border-right: none; }
+      .stats-bar .stat:nth-child(4),
+      .stats-bar .stat:nth-child(5) { flex: 1 1 50%; border-bottom: none; }
+      .stats-bar .stat:nth-child(5) { border-right: none; }
+      .stats-bar .stat-val { font-size: 17px; }
+      .stats-bar .stat-lbl { font-size: 9px; }
+
+      /* Page body */
+      .page { padding: 0 16px; }
+      .sec-title { font-size: 12px; margin-top: 24px; margin-bottom: 12px; }
+
+      /* Executive Summary */
+      .exec-summary { margin-top: 20px; }
+      .exec-line { font-size: 13px; line-height: 1.6; margin-bottom: 12px; }
+
+      /* Chart */
+      .chart-wrap { padding: 14px 10px; }
+      .chart-area { height: 110px; gap: 3px; }
+      .chart-label { font-size: 10px; margin-bottom: 10px; }
+      .bar-val { font-size: 7px; }
+      .bar-lbl { font-size: 7px; }
+
+      /* Unit Economics */
+      .unit-cell { padding: 12px 10px; }
+      .unit-cell .u-value { font-size: 22px; }
+      .unit-cell .u-label { font-size: 10px; }
+      .unit-cell .u-sub { font-size: 9px; }
+
+      /* Market - 세로 스택 */
+      .market-row { flex-direction: column; gap: 8px; }
+      .market-card {
+        padding: 12px 16px;
+        display: flex; align-items: center; gap: 12px;
+        text-align: left; border-radius: 6px;
+      }
+      .market-card .m-tag { min-width: 30px; }
+      .market-card .m-val { font-size: 22px; margin: 0; }
+      .market-card .m-lbl { font-size: 10px; margin: 0; }
+
+      /* Moats */
+      .moats-list li { font-size: 13px; line-height: 1.6; padding-left: 16px; }
+
+      /* Ask */
+      .ask-box { padding: 16px; }
+      .ask-amount { font-size: 18px; }
+      .ask-amount span { padding: 2px 6px; }
+      .ask-detail { font-size: 12px; line-height: 1.7; }
+
+      /* Team - 2x2 */
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .team-cell { padding: 12px 8px; }
+      .team-cell .t-name { font-size: 13px; }
+      .team-cell .t-role { font-size: 10px; }
+      .team-cell .t-bio { font-size: 10px; }
+
+      /* Backed */
+      .backed { margin-top: 24px; }
+      .backed-header { font-size: 13px; }
+      .backed-line { font-size: 12px; line-height: 1.7; }
+
+      /* Video */
+      .video-wrap { border-radius: 6px; }
+      .video-play { width: 56px; height: 56px; }
+      .video-play svg { width: 18px; height: 22px; }
+
+      /* Bottom Stats */
+      .bottom-stats .bs { padding: 12px 4px; }
+      .bottom-stats .bs-val { font-size: 17px; }
+      .bottom-stats .bs-lbl { font-size: 9px; }
+
+      /* Footer */
+      .footer { padding: 12px 16px; }
+      .footer-line { font-size: 11px; }
+      .footer-links { font-size: 10px; line-height: 1.8; }
+    }
+
+    /* ── Small mobile (SE, Galaxy S8 등) ── */
+    @media (max-width: 360px) {
+      .logo-area svg { width: 90px; }
+      .series-badge { padding: 4px 8px; font-size: 10px; }
+      .lang-btn { padding: 3px 6px; font-size: 9px; }
+      .stats-bar .stat-val { font-size: 15px; }
+      .unit-cell .u-value { font-size: 20px; }
+      .market-card .m-val { font-size: 20px; }
+      .chart-area { height: 90px; }
+      .ask-amount { font-size: 16px; }
+      .bottom-stats .bs-val { font-size: 15px; }
+    }
+
+    /* ── Fade-in ── */
+    .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="top-header">
+    <div class="logo-area">
+      <svg width="164" height="28" viewBox="0 0 164 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_422_2761)"><g clip-path="url(#clip1_422_2761)">
+<path d="M10.8841 0.352356H2.42774C1.13043 0.352356 0.0787506 1.40404 0.0787506 2.70135V11.1577C0.0787506 12.455 1.13043 13.5067 2.42774 13.5067H10.8841C12.1814 13.5067 13.2331 12.455 13.2331 11.1577V2.70135C13.2331 1.40404 12.1814 0.352356 10.8841 0.352356Z" fill="#FFFFFF"/>
+<path d="M14.1727 2.70136C14.1727 1.40404 15.2244 0.352356 16.5217 0.352356H26.1312C26.7917 0.352356 27.3271 0.887757 27.3271 1.54821C27.3271 8.15271 21.9731 13.5067 15.3686 13.5067C14.7081 13.5067 14.1727 12.9713 14.1727 12.3108V2.70136Z" fill="#FFFFFF"/>
+<path d="M10.8841 14.4463H2.42774C1.13043 14.4463 0.0787506 15.4979 0.0787506 16.7953V25.2516C0.0787506 26.5489 1.13043 27.6006 2.42774 27.6006H10.8841C12.1814 27.6006 13.2331 26.5489 13.2331 25.2516V16.7953C13.2331 15.4979 12.1814 14.4463 10.8841 14.4463Z" fill="#FFFFFF"/>
+<path d="M27.3271 16.7953C27.3271 15.498 26.2754 14.4463 24.978 14.4463H15.3686C14.7081 14.4463 14.1727 14.9817 14.1727 15.6421C14.1727 22.2466 19.5267 27.6007 26.1312 27.6007C26.7917 27.6007 27.3271 27.0653 27.3271 26.4048V16.7953Z" fill="#FFFFFF"/>
+<mask id="mask0_422_2761" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="32" y="0" width="132" height="28"><path d="M163.804 0H32.9646V27.9531H163.804V0Z" fill="white"/></mask>
+<g mask="url(#mask0_422_2761)">
+<path d="M83.0628 16.9444C83.0634 16.9438 83.0636 16.9428 83.0631 16.9418C82.2037 15.4112 80.4419 12.2809 79.9413 11.3912C79.8602 11.2472 79.8837 11.0691 79.9977 10.9494C80.5255 10.3957 82.0061 8.84129 82.6999 8.10167C83.0775 7.69821 83.6902 7.03257 84.1414 6.54099C84.3625 6.30021 84.1913 5.91241 83.8644 5.91241H78.7039C78.5938 5.91241 78.4892 5.96066 78.4178 6.04441L75.0636 9.97868C74.8368 10.2447 74.4015 10.0841 74.4018 9.7345L74.4099 0.611069C74.4101 0.403367 74.2418 0.234894 74.0341 0.234894H69.4046C69.197 0.234894 69.0287 0.403162 69.0287 0.610733V21.4557C69.0287 21.6632 69.197 21.8315 69.4046 21.8315H74.0312C74.2391 21.8315 74.4075 21.6627 74.407 21.4548L74.3965 17.0051C74.3963 16.9054 74.435 16.8103 74.5054 16.7397C74.7736 16.4701 75.4791 15.7599 75.9827 15.2441C76.1443 15.0787 76.3911 15.1066 76.502 15.3096C77.201 16.5894 79.4052 20.6919 79.9125 21.6364C79.978 21.7584 80.1037 21.8315 80.2421 21.8315H85.1729C85.4607 21.8315 85.6418 21.5215 85.5003 21.2709C84.9184 20.2406 83.6819 18.0506 83.0624 16.947C83.0619 16.9462 83.0621 16.9451 83.0628 16.9444Z" fill="#FFFFFF"/>
+<path d="M99.2191 7.02583C99.2184 7.02583 99.2176 7.02561 99.217 7.02518C97.4039 5.83006 95.3864 5.44265 93.2609 5.62114C90.6137 5.84195 88.4149 6.91073 86.8553 9.14228C85.6831 10.8171 85.3378 12.6892 85.4928 14.6694C85.6996 17.2933 86.9233 19.3299 89.1455 20.7792C90.1532 21.4369 91.3723 22.1651 94.0408 22.1651C96.7092 22.1651 99.157 21.0329 100.552 19.6024C102.427 17.6809 102.995 15.3155 102.709 12.7433C102.439 10.3313 101.283 8.38652 99.2213 7.02649C99.2207 7.02607 99.2199 7.02583 99.2191 7.02583ZM94.1042 17.5059C94.1042 17.5065 94.1037 17.5071 94.103 17.5071C91.9896 17.5065 90.5149 15.9869 90.529 13.8262C90.5431 11.6722 92.0065 10.2158 94.1535 10.2181C96.2277 10.2205 97.6817 11.6956 97.6841 13.8004C97.6888 16.0173 96.2494 17.5041 94.1054 17.5047C94.1048 17.5047 94.1042 17.5052 94.1042 17.5059Z" fill="#FFFFFF"/>
+<path d="M66.3627 11.7332C66.3627 11.1671 66.3392 10.6033 66.2357 10.049C65.806 7.73523 64.4364 5.95939 61.8667 5.63993C60.168 5.42858 58.6651 5.79691 57.3641 6.94887C57.1015 7.18132 56.6472 7.00831 56.6472 6.65766V6.28825C56.6472 6.08068 56.479 5.91241 56.2713 5.91241H52.0643C51.8567 5.91241 51.6885 6.08068 51.6885 6.28825V21.4557C51.6885 21.6632 51.8567 21.8315 52.0643 21.8315H56.6895C56.897 21.8315 57.0653 21.6658 57.0653 21.4583C57.0653 20.0915 57.0653 15.3177 57.0653 12.9617C57.0653 12.4966 57.0912 12.0339 57.218 11.5806C57.4811 10.648 58.2375 10.0584 59.1841 10.0701C60.0768 10.0819 60.6498 10.5869 60.8919 11.5947C60.9412 11.8014 60.9623 12.0174 60.9623 12.2289C60.9704 14.8187 60.9698 20.0244 60.9695 21.4569C60.9694 21.6646 61.1377 21.8292 61.3453 21.8292H65.9931C66.2009 21.8292 66.3694 21.6644 66.3689 21.4565C66.3662 19.9796 66.3566 14.485 66.3627 11.7332Z" fill="#FFFFFF"/>
+<path d="M46.4714 7.11276C46.4698 7.11276 46.4684 7.11226 46.4671 7.11134C44.6987 5.78063 42.6487 5.4333 40.4931 5.63525C38.3814 5.83021 36.5515 6.6641 35.1046 8.23088C33.2934 10.1876 32.7227 12.5483 33.0539 15.1299C33.364 17.5376 34.5056 19.4638 36.6056 20.798C37.5922 21.4251 38.675 21.7447 39.7814 22.0336C39.8331 22.0547 40.6929 22.1674 41.4938 22.1674C42.4711 22.1674 43.2204 22.0453 43.7536 21.9044C45.062 21.5614 46.2458 21.0376 47.2418 20.1308C48.2473 19.2162 48.9356 18.1135 49.3066 16.7903C49.3713 16.5593 49.1924 16.3373 48.9524 16.3375C47.5736 16.3385 46.2391 16.3429 44.9046 16.3303C44.8804 16.3303 44.8525 16.3303 44.8234 16.3303C44.6719 16.3303 44.5363 16.4216 44.4727 16.559C44.4553 16.5965 44.4382 16.6324 44.423 16.6614C44.1553 17.1853 43.7183 17.5634 43.1874 17.7631C40.9864 18.5899 38.2592 17.4342 37.9563 14.9607C37.9456 14.8693 37.9393 14.7562 37.9363 14.6497C37.9309 14.4608 38.0812 14.316 38.2701 14.3165C38.2994 14.3165 38.3328 14.3167 38.372 14.3171C41.8133 14.3453 45.3486 14.3312 48.7898 14.3312H49.2372C49.4406 14.3312 49.6067 14.1694 49.6029 13.966C49.6003 13.8285 49.5944 13.666 49.5814 13.5044C49.3912 10.9705 48.5906 8.70672 46.4756 7.11418C46.4743 7.11327 46.4729 7.11276 46.4714 7.11276ZM38.9552 11.5007C38.7172 11.5007 38.5397 11.2798 38.6463 11.0669C39.0697 10.2211 40.1701 9.57194 41.4281 9.47116C42.6465 9.37459 43.6941 9.94116 44.2771 11.0106C44.4021 11.2399 44.2213 11.5007 43.96 11.5007H38.9552Z" fill="#FFFFFF"/>
+<path d="M43.4646 22.0469C43.4646 22.046 43.4639 22.0453 43.4631 22.0453H43.462C43.4608 22.0453 43.46 22.0456 43.4597 22.0467C43.459 22.0486 43.4604 22.0508 43.4621 22.0496L43.464 22.0481C43.4644 22.0478 43.4646 22.0474 43.4646 22.0469Z" fill="#FFFFFF"/>
+<path d="M144.92 11.2458C144.918 11.2451 144.918 11.2436 144.916 11.242C144.813 8.49037 143.265 6.56755 140.586 5.86777C138.666 5.36508 136.749 5.47549 134.891 6.14965C133.054 6.81645 131.799 8.04355 131.196 9.89225C131.121 10.1253 131.3 10.3567 131.545 10.3569C132.853 10.3577 134.887 10.3612 135.776 10.3629C136 10.3633 136.276 10.1539 136.386 9.95972C136.749 9.3161 137.416 9.16811 138.105 9.1963C138.66 9.21744 139.131 9.44998 139.357 9.99495C139.612 10.6109 139.616 11.6399 139.592 12.4963C139.587 12.6799 139.371 12.7695 139.232 12.6493C136.665 10.4131 130.854 11.0591 130.185 15.8228C129.903 17.8311 130.401 19.5952 132.091 20.8966C133.049 21.6342 134.161 21.9232 135.331 22.0594C135.805 22.0782 136.348 22.0617 136.677 22.0265C137.558 21.8603 138.369 21.5692 139.065 20.9927C139.347 20.7587 139.863 20.9402 139.862 21.307C139.861 21.3586 139.861 21.408 139.861 21.4546C139.86 21.6627 140.029 21.8315 140.237 21.8315H144.552C144.758 21.8315 144.925 21.6709 144.928 21.4659C144.951 19.9602 145.032 14.1807 144.922 11.2495C144.922 11.2479 144.921 11.2465 144.92 11.2458ZM139.564 16.8306C139.543 17.4436 139.327 18.3363 138.378 18.6181C137.32 18.9306 136.214 18.6251 135.69 17.8758C135.19 17.1594 135.265 15.9215 135.855 15.2074C136.698 14.1856 138.678 14.2349 139.347 15.3765C139.523 15.7124 139.602 16.1846 139.564 16.8306Z" fill="#FFFFFF"/>
+<path d="M158.099 5.91003C157.963 5.91003 157.838 5.9838 157.772 6.10283L154.805 11.4222C154.66 11.6826 154.284 11.6784 154.145 11.4147L151.342 6.11028C151.276 5.9871 151.149 5.91003 151.01 5.91003H146.234C145.947 5.91003 145.766 6.21864 145.906 6.46916L151.511 16.5031C151.575 16.6175 151.575 16.7569 151.511 16.8709L145.847 26.9228C145.706 27.1734 145.887 27.4832 146.174 27.4832H150.947C151.081 27.4832 151.205 27.4118 151.272 27.2959L163.346 6.47441C163.492 6.22385 163.311 5.91003 163.022 5.91003H158.099Z" fill="#FFFFFF"/>
+<path d="M115.373 6.84967C113.676 5.62819 111.752 5.43322 109.751 5.66342C108.102 5.85369 106.685 6.49496 105.668 7.86678C104.42 9.54866 104.599 12.6517 106.57 14.0329C107.512 14.693 108.585 15.0077 109.64 15.3835C110.274 15.6091 110.953 15.7335 111.505 16.1658C111.909 16.4829 112.055 16.8822 111.959 17.3825C111.855 17.911 111.517 18.1695 111.012 18.2681C110.09 18.4443 109.335 17.9416 109.057 16.9597C109.05 16.9322 109.041 16.9041 109.035 16.8762C108.99 16.6962 108.834 16.5606 108.648 16.5608L104.475 16.5669C104.288 16.5672 104.129 16.7127 104.148 16.8987C104.324 18.442 104.879 19.7808 106.137 20.7722C107.032 21.4768 108.085 21.7799 109.165 22.0265C110.495 22.2285 111.347 22.1698 112.174 22.0712C113.11 21.9255 113.8 21.6976 114.552 21.3077C117.293 19.8818 117.866 15.7007 115.582 13.6406C114.714 12.856 113.623 12.4849 112.546 12.095C111.801 11.8248 111.026 11.6229 110.349 11.1906C109.645 10.7396 109.685 9.83758 110.413 9.45235C111.239 9.01778 112.252 9.42886 112.507 10.3167C112.51 10.3232 112.512 10.3296 112.514 10.3359C112.568 10.5362 112.737 10.7067 112.945 10.7067H117.07C117.247 10.7067 117.397 10.566 117.378 10.3896C117.145 8.95905 116.581 7.71879 115.367 6.84496L115.373 6.84967Z" fill="#FFFFFF"/>
+<path d="M129.256 6.28568C129.256 6.0782 129.088 5.91005 128.88 5.91005H126.987C126.779 5.91005 126.611 5.74178 126.611 5.53421V0.610556C126.611 0.40305 126.443 0.234808 126.236 0.234717L121.611 0.232697C121.403 0.232606 121.235 0.400901 121.235 0.608536V5.53421C121.235 5.74178 121.066 5.91005 120.859 5.91005H119.132C118.925 5.91005 118.756 6.07832 118.756 6.28589V9.81642C118.756 10.024 118.925 10.1923 119.132 10.1923H120.86C121.068 10.1923 121.237 10.3609 121.236 10.5687L121.216 21.4526C121.216 21.6605 121.384 21.8292 121.592 21.8292H126.256C126.464 21.8292 126.632 21.6605 126.632 21.4526L126.612 10.5687C126.611 10.3609 126.78 10.1923 126.988 10.1923H128.882C129.09 10.1923 129.258 10.0239 129.258 9.81622L129.256 6.28568Z" fill="#FFFFFF"/>
+</g></g></g>
+<defs><clipPath id="clip0_422_2761"><rect width="163.882" height="28" fill="white"/></clipPath><clipPath id="clip1_422_2761"><rect width="163.882" height="28" fill="white"/></clipPath></defs>
+</svg>
+    </div>
+    <span class="header-tagline" data-i18n="headerTagline"></span>
+    <div class="header-right">
+      <div class="series-badge">Series A | $7M</div>
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="en" onclick="switchLang('en')">EN</button>
+        <button class="lang-btn" data-lang="kr" onclick="switchLang('kr')">KR</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-val">$20.7M</div>
+      <div class="stat-lbl" data-i18n="statRunRate"></div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">$5.2M</div>
+      <div class="stat-lbl">Q1'26 GMV</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">258%</div>
+      <div class="stat-lbl" data-i18n="statGrowth"></div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">18x</div>
+      <div class="stat-lbl">LTV/CAC</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">13%+</div>
+      <div class="stat-lbl">Take Rate</div>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <!-- Executive Summary -->
+    <div class="sec-title" data-i18n="secExec"></div>
+    <div class="exec-summary fade-in">
+      <p class="exec-line"><span class="label-problem" data-i18n="lblProblem"></span> <span data-i18n="execProblem"></span></p>
+      <p class="exec-line"><span class="label-solution" data-i18n="lblSolution"></span> <span data-i18n="execSolution"></span></p>
+      <p class="exec-line"><span class="label-revenue" data-i18n="lblRevenue"></span> <span data-i18n="execRevenue"></span></p>
+    </div>
+
+    <!-- Traction -->
+    <div class="sec-title">TRACTION</div>
+    <div class="chart-wrap fade-in">
+      <div class="chart-label" data-i18n="chartLabel"></div>
+      <div class="chart-area" id="gmvChart">
+        <div class="bar-col"><div class="bar-val"></div><div class="bar low" data-height="5%"></div><div class="bar-lbl">Q1'24</div></div>
+        <div class="bar-col"><div class="bar-val"></div><div class="bar low" data-height="5%"></div><div class="bar-lbl">Q2'24</div></div>
+        <div class="bar-col"><div class="bar-val"></div><div class="bar low" data-height="5%"></div><div class="bar-lbl">Q3'24</div></div>
+        <div class="bar-col"><div class="bar-val"></div><div class="bar low" data-height="6%"></div><div class="bar-lbl">Q4'24</div></div>
+        <div class="bar-col"><div class="bar-val">$885K</div><div class="bar mid" data-height="17%"></div><div class="bar-lbl">Q1'25</div></div>
+        <div class="bar-col"><div class="bar-val">$2.0M</div><div class="bar mid" data-height="38%"></div><div class="bar-lbl">Q2'25</div></div>
+        <div class="bar-col"><div class="bar-val">$3.6M</div><div class="bar high" data-height="69%"></div><div class="bar-lbl">Q3'25</div></div>
+        <div class="bar-col"><div class="bar-val">$3.8M</div><div class="bar high" data-height="73%"></div><div class="bar-lbl">Q4'25</div></div>
+        <div class="bar-col"><div class="bar-val">$5.2M</div><div class="bar top" data-height="100%"></div><div class="bar-lbl">Q1'26</div></div>
+      </div>
+    </div>
+
+    <!-- Unit Economics -->
+    <div class="sec-title" data-i18n="secUnit"></div>
+    <div class="unit-grid fade-in">
+      <div class="unit-cell">
+        <div class="u-label">CAC</div>
+        <div class="u-value">$22</div>
+        <div class="u-sub" data-i18n="unitCACSub"></div>
+      </div>
+      <div class="unit-cell">
+        <div class="u-label">LTV</div>
+        <div class="u-value">$406</div>
+        <div class="u-sub" data-i18n="unitLTVSub"></div>
+      </div>
+      <div class="unit-cell">
+        <div class="u-label">ROI</div>
+        <div class="u-value">18x</div>
+        <div class="u-sub" data-i18n="unitROISub"></div>
+      </div>
+      <div class="unit-cell">
+        <div class="u-label" data-i18n="unitRepLabel"></div>
+        <div class="u-value">57%</div>
+        <div class="u-sub" data-i18n="unitRepSub"></div>
+      </div>
+    </div>
+
+    <!-- Market -->
+    <div class="sec-title" data-i18n="secMarket"></div>
+    <div class="market-row fade-in">
+      <div class="market-card tam">
+        <div class="m-tag">TAM</div>
+        <div class="m-val">$113B</div>
+        <div class="m-lbl" data-i18n="mktTAM"></div>
+      </div>
+      <div class="market-card sam">
+        <div class="m-tag">SAM</div>
+        <div class="m-val">$23B</div>
+        <div class="m-lbl" data-i18n="mktSAM"></div>
+      </div>
+      <div class="market-card som">
+        <div class="m-tag">SOM</div>
+        <div class="m-val">$3B</div>
+        <div class="m-lbl" data-i18n="mktSOM"></div>
+      </div>
+    </div>
+
+    <!-- Competitive Moats -->
+    <div class="sec-title" data-i18n="secMoats"></div>
+    <ul class="moats-list fade-in">
+      <li data-i18n="moat1"></li>
+      <li data-i18n="moat2"></li>
+      <li data-i18n="moat3"></li>
+      <li data-i18n="moat4"></li>
+      <li data-i18n="moat5"></li>
+    </ul>
+
+    <!-- The Ask -->
+    <div class="sec-title" data-i18n="secAsk"></div>
+    <div class="ask-box fade-in">
+      <div class="ask-amount"><span>$7M Series A</span></div>
+      <p class="ask-detail" data-i18n="askTargets"></p>
+      <p class="ask-detail" data-i18n="askFunds"></p>
+    </div>
+
+    <!-- Team -->
+    <div class="sec-title" data-i18n="secTeam"></div>
+    <div class="team-grid fade-in">
+      <div class="team-cell">
+        <div class="t-name" data-i18n="t1Name"></div>
+        <div class="t-role">CEO / Founder</div>
+        <div class="t-bio" data-i18n="t1Bio"></div>
+      </div>
+      <div class="team-cell">
+        <div class="t-name" data-i18n="t2Name"></div>
+        <div class="t-role">CTO</div>
+        <div class="t-bio" data-i18n="t2Bio"></div>
+      </div>
+      <div class="team-cell">
+        <div class="t-name" data-i18n="t3Name"></div>
+        <div class="t-role">COO / Co-founder</div>
+        <div class="t-bio" data-i18n="t3Bio"></div>
+      </div>
+      <div class="team-cell">
+        <div class="t-name" data-i18n="t4Name"></div>
+        <div class="t-role">IT Advisor</div>
+        <div class="t-bio" data-i18n="t4Bio"></div>
+      </div>
+    </div>
+
+    <!-- Backed By -->
+    <div class="backed fade-in">
+      <div class="backed-header">BACKED BY <span>Investors & Partners</span></div>
+      <p class="backed-line"><span class="b-label">Investors:</span> JB Investment | CNT Tech | Kinggo Spring</p>
+      <p class="backed-line"><span class="b-label">Partners:</span> <span data-i18n="partners"></span></p>
+    </div>
+
+    <!-- CEO Interview -->
+    <div class="sec-title" data-i18n="secVideo"></div>
+    <a href="https://www.youtube.com/watch?v=W2nHHiIWuqk&t=222s" target="_blank" rel="noopener" class="video-wrap fade-in" style="display:block; text-decoration:none;">
+      <img src="https://img.youtube.com/vi/W2nHHiIWuqk/hqdefault.jpg" alt="CEO Interview" loading="lazy">
+      <div class="video-overlay"></div>
+      <button class="video-play" aria-label="Play video">
+        <svg viewBox="0 0 24 28" fill="none"><path d="M22.5 12.268a2 2 0 010 3.464L3 27.856a2 2 0 01-3-1.732V1.876A2 2 0 013 .144L22.5 12.268z" fill="#fff"/></svg>
+      </button>
+    </a>
+
+  </div><!-- .page -->
+
+  <!-- Bottom Stats -->
+  <div class="bottom-stats">
+    <div class="bs"><div class="bs-val">40K+</div><div class="bs-lbl">Members</div></div>
+    <div class="bs"><div class="bs-val">10K+</div><div class="bs-lbl">Listings</div></div>
+    <div class="bs"><div class="bs-val">500K</div><div class="bs-lbl" data-i18n="bsNights"></div></div>
+    <div class="bs"><div class="bs-val">7K+</div><div class="bs-lbl">Hosts</div></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="footer-line">
+      <a href="mailto:ceo@enko.kr">ceo@enko.kr</a> | +82.10.7385.2040 | Seoul, Korea
+    </p>
+    <p class="footer-links">
+      🏅 CEO LinkedIn <a href="https://www.linkedin.com/in/junghoon-oh-47428b210/" target="_blank">linkedin.com/in/junghoon-oh</a>
+      &nbsp;|&nbsp; 🏠 <a href="https://stay.enko.kr" target="_blank">enko.kr</a>
+    </p>
+  </footer>
+
+  <script>
+    const i18n = {
+      en: {
+        headerTagline: "The Global Mid-Term Housing Platform",
+        statRunRate: "2026 Run Rate",
+        statGrowth: "YoY Growth",
+        secExec: "EXECUTIVE SUMMARY",
+        lblProblem: "Problem:",
+        lblSolution: "Solution:",
+        lblRevenue: "Revenue:",
+        execProblem: "14M+ expats in Asia trapped between expensive short-term stays and inaccessible long-term leases. $23B unserved mid-term housing market.",
+        execSolution: "#1 fully digital mid-term housing platform (1-12 mo). No deposit, flexible terms, AI Agent-powered ops. 10K+ listings, 40K+ members.",
+        execRevenue: "Guest 10% + Host 3% commission + <strong>AI Agent Ops fee</strong> (pay-per-resolution)",
+        chartLabel: "Quarterly GMV (USD K)",
+        secUnit: "UNIT ECONOMICS",
+        unitCACSub: "vs. $200 industry avg",
+        unitLTVSub: "Lifetime Customer Value",
+        unitROISub: "Return on CAC",
+        unitRepLabel: "Repurchase",
+        unitRepSub: "Repurchase Rate",
+        secMarket: "MARKET",
+        mktTAM: "Global Mid-Term",
+        mktSAM: "APAC Mid-Term",
+        mktSOM: "Korea Mid-Term",
+        secMoats: "COMPETITIVE MOATS",
+        moat1: "<strong>AI Agent Operator:</strong> Autonomous CS, booking, yield mgmt. 10x volume, 0 new hires. Pay-per-action pricing",
+        moat2: "80% lower CAC via exclusive B2B2C university/institution partnerships",
+        moat3: "Regulatory moat: 100% legal-only supply post Airbnb crackdown ($78M vacuum captured)",
+        moat4: "Full-stack ecosystem: Housing + Social + Tours = switching cost moat",
+        moat5: "Expansion: Japan (2H 2026), Thailand/Singapore/Taiwan (2027), US (2028)",
+        secAsk: "THE ASK",
+        askTargets: "<strong>2026 Targets:</strong> $21M GMV | $4.4M Revenue | Japan Market Launch",
+        askFunds: "<strong>Use of Funds:</strong> Global Expansion 45% | Sales & Mktg 25% | <strong>AI Agent Ops 20%</strong> | Ops 10%",
+        secTeam: "TEAM",
+        t1Name: "Junghoon Oh",
+        t1Bio: "14yr Execution<br>Pretotype Pioneer",
+        t2Name: "Jinsung Park",
+        t2Bio: "15yr Backend<br>AI Agent Specialist",
+        t3Name: "Youngjin Lee",
+        t3Bio: "Supply Chain Master<br>Expat Co-living Expert",
+        t4Name: "Hojae Yoon",
+        t4Bio: "Columbia CS M.S.<br>Ex-Google Sr. AI Eng.",
+        partners: "Seoul Metropolitan Gov't | Korea Tourism Org. | Sogang Univ. | Hanyang Univ. +10 Top Universities",
+        bsNights: "Nights Booked",
+        secVideo: "CEO INTERVIEW",
+      },
+      kr: {
+        headerTagline: "글로벌 미드텀 하우징 플랫폼",
+        statRunRate: "2026 런레이트",
+        statGrowth: "전년 대비 성장률",
+        secExec: "사업 개요",
+        lblProblem: "문제:",
+        lblSolution: "솔루션:",
+        lblRevenue: "수익 모델:",
+        execProblem: "아시아 내 1,400만 명 이상의 외국인이 비싼 단기 체류와 접근 불가능한 장기 임대 사이에 갇혀 있습니다. $23B 규모의 미드텀 하우징 시장이 방치되어 있습니다.",
+        execSolution: "#1 완전 디지털 미드텀 하우징 플랫폼 (1~12개월). 보증금 제로, 유연한 계약, AI Agent 기반 운영. 10K+ 매물, 40K+ 회원.",
+        execRevenue: "게스트 10% + 호스트 3% 수수료 + <strong>AI Agent Ops 비용</strong> (건당 과금)",
+        chartLabel: "분기별 GMV (USD K)",
+        secUnit: "유닛 이코노믹스",
+        unitCACSub: "업계 평균 $200 대비",
+        unitLTVSub: "고객 생애 가치",
+        unitROISub: "CAC 대비 수익률",
+        unitRepLabel: "재구매율",
+        unitRepSub: "재구매율",
+        secMarket: "시장 규모",
+        mktTAM: "글로벌 미드텀",
+        mktSAM: "아시아 태평양 미드텀",
+        mktSOM: "한국 미드텀",
+        secMoats: "경쟁 해자",
+        moat1: "<strong>AI Agent Operator:</strong> 자율 CS, 예약, 수익 관리. 거래량 10배 증가에도 신규 채용 0. 건당 과금 모델",
+        moat2: "대학/기관 독점 B2B2C 파트너십을 통해 80% 낮은 고객 획득 비용",
+        moat3: "규제 해자: 에어비앤비 규제 이후 100% 합법 공급만 운영 ($78M 시장 공백 포착)",
+        moat4: "풀스택 생태계: 주거 + 소셜 + 투어 = 전환 비용 해자",
+        moat5: "글로벌 확장: 일본 (2026 하반기), 태국/싱가포르/대만 (2027), 미국 (2028)",
+        secAsk: "투자 제안",
+        askTargets: "<strong>2026 목표:</strong> $21M GMV | $4.4M 매출 | 일본 시장 진출",
+        askFunds: "<strong>자금 사용:</strong> 글로벌 확장 45% | 영업 & 마케팅 25% | <strong>AI Agent Ops 20%</strong> | 운영 10%",
+        secTeam: "팀",
+        t1Name: "오정훈",
+        t1Bio: "14년 실행 경력<br>프레토타입 전문가",
+        t2Name: "박진성",
+        t2Bio: "15년 백엔드 경력<br>AI Agent 전문가",
+        t3Name: "이영진",
+        t3Bio: "공급망 전문가<br>외국인 코리빙 전문가",
+        t4Name: "윤호재",
+        t4Bio: "Columbia CS 석사<br>前 Google 시니어 AI 엔지니어",
+        partners: "서울특별시 | 한국관광공사 | 서강대학교 | 한양대학교 +10 주요 대학",
+        bsNights: "숙박일 수",
+        secVideo: "CEO 인터뷰",
+      }
+    };
+
+    let currentLang = 'en';
+
+    function switchLang(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang === 'kr' ? 'ko' : 'en';
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
+      });
+    }
+
+    switchLang('en');
+
+    // Fade-in observer
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 60);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+    // Chart animation
+    const cObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.bar').forEach((bar, i) => {
+            setTimeout(() => { bar.style.height = bar.dataset.height; }, i * 100);
+          });
+          cObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    document.getElementById('gmvChart') && cObs.observe(document.getElementById('gmvChart'));
+  </script>
+</body>
+</html>
