@@ -259,6 +259,59 @@
       transform: translateY(-1px);
     }
 
+    /* ── IR Deck Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-box {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 32px 28px 24px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      animation: modalIn 0.25s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-box .modal-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+    .modal-box .modal-msg {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .modal-box .modal-btn {
+      display: inline-block;
+      background: var(--olive);
+      color: var(--gold);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 12px 32px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .modal-box .modal-btn:hover {
+      opacity: 0.85;
+    }
+
     /* ── Responsive: Tablet ── */
     @media (max-width: 768px) {
       .header-tagline { display: none; }
@@ -430,7 +483,7 @@
       <div class="stat-lbl" data-i18n="statGrowth"></div>
     </div>
     <div class="stat">
-      <div class="stat-val">18x</div>
+      <div class="stat-val">23x</div>
       <div class="stat-lbl">LTV/CAC</div>
     </div>
     <div class="stat">
@@ -476,12 +529,12 @@
       </div>
       <div class="unit-cell">
         <div class="u-label">LTV</div>
-        <div class="u-value">$406</div>
+        <div class="u-value">$528</div>
         <div class="u-sub" data-i18n="unitLTVSub"></div>
       </div>
       <div class="unit-cell">
         <div class="u-label">ROI</div>
-        <div class="u-value">18x</div>
+        <div class="u-value">23x</div>
         <div class="u-sub" data-i18n="unitROISub"></div>
       </div>
       <div class="unit-cell">
@@ -575,7 +628,7 @@
     <div class="cta-box fade-in">
       <h3 data-i18n="ctaTitle"></h3>
       <p data-i18n="ctaSub"></p>
-      <a href="#" onclick="return false;" class="cta-btn" data-i18n="ctaBtn"></a>
+      <a href="#" onclick="openDeckModal(); return false;" class="cta-btn" data-i18n="ctaBtn"></a>
     </div>
 
   </div><!-- .page -->
@@ -599,7 +652,23 @@
     </p>
   </footer>
 
+  <!-- IR Deck Modal -->
+  <div class="modal-overlay" id="deckModal" onclick="if(event.target===this)closeDeckModal()">
+    <div class="modal-box">
+      <div class="modal-icon">🔒</div>
+      <div class="modal-msg" data-i18n="modalMsg"></div>
+      <button class="modal-btn" onclick="closeDeckModal(); window.open('https://www.papermark.com/view/cmmub1jm10004l804w4armaby','_blank');" data-i18n="modalBtn"></button>
+    </div>
+  </div>
+
   <script>
+    function openDeckModal() {
+      document.getElementById('deckModal').classList.add('active');
+    }
+    function closeDeckModal() {
+      document.getElementById('deckModal').classList.remove('active');
+    }
+
     const i18n = {
       en: {
         headerTagline: "The Global Mid-Term Housing Platform",
@@ -647,6 +716,8 @@
         ctaTitle: "Interested in Enkorwithus?",
         ctaSub: "Get our full investment deck with detailed financials and growth strategy",
         ctaBtn: "Request IR Deck",
+        modalMsg: "Please enter the password received from Junghoon Oh.",
+        modalBtn: "Confirm",
       },
       kr: {
         headerTagline: "글로벌 미드텀 하우징 플랫폼",
@@ -694,6 +765,8 @@
         ctaTitle: "엔코위더스에 관심이 있으신가요?",
         ctaSub: "상세 재무 데이터와 성장 전략이 담긴 IR 덱을 보내드립니다",
         ctaBtn: "IR 덱(Investment Deck) 요청하기",
+        modalMsg: "Password는 Junghoon Oh에게 받은 pw를 입력해주세요.",
+        modalBtn: "확인",
       }
     };
 
