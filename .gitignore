@@ -1,0 +1,9 @@
+# GitHub PAT (never commit)
+pat.txt
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/

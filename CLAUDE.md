@@ -1,84 +1,56 @@
-# Enkorwithus IR One-Pager
+# Enkorwithus IR One-Pager — 작업 지침
 
-## 프로젝트 개요
+엔코위더스(Enkostay) Series A 투자 유치용 IR 웹페이지 작업 시 반드시 지켜야 할 가이드.
 
-엔코위더스(Enkostay) Series A 투자 유치용 IR 웹페이지.
-GitHub Pages로 호스팅되며, 단일 `index.html` 파일로 구성됨.
+## 프로젝트 메타
 
-- **배포 URL**: https://enko-jake.github.io/enkorwithus-ir/
-- **레포지토리**: https://github.com/enko-jake/enkorwithus-ir
-- **GitHub Pages 설정**: `main` 브랜치 / `/ (root)` 경로
+- 배포 URL: https://ir.enko.kr/
+- 레포: https://github.com/enko-jake/enkorwithus-ir
+- GitHub Pages: `main` 브랜치 / `/ (root)` 경로
 
-## 파일 구조
+## 아키텍처 규칙
 
-```
-enkorwithus-ir/
-├── CLAUDE.md      ← 이 문서
-└── index.html     ← IR 웹페이지 (CSS, JS, SVG 로고 모두 인라인)
-```
+- **단일 파일 원칙**: CSS, JavaScript, SVG 로고는 모두 `index.html` 내부에 인라인으로 유지한다. 별도 `.css`, `.js`, `.svg` 파일을 생성하지 않는다.
+- **빌드 단계 없음**: 번들러/트랜스파일러/프레임워크를 도입하지 않는다. 순수 HTML/CSS/JS만 사용한다.
+- **외부 의존성 최소화**: 현재 외부 리소스는 Google Fonts와 YouTube 썸네일 이미지뿐이다. 추가 CDN/라이브러리를 임의로 도입하지 않는다.
 
-## 기술 구조
+## i18n 규칙
 
-### 단일 파일 구성
-- CSS, JavaScript, SVG 로고가 모두 `index.html` 안에 인라인으로 포함
-- 외부 의존성: Google Fonts (Noto Sans KR, Inter), YouTube 썸네일 이미지 (hqdefault.jpg)
-- 별도 빌드 과정 없음
+- 다국어 텍스트는 반드시 `<script>` 내부 `i18n` 객체의 `en` / `kr` 키로 관리한다.
+- HTML 요소는 `data-i18n="키이름"` 속성으로 텍스트를 바인딩한다.
+- `data-i18n` 속성이 있는 요소의 텍스트 노드를 직접 수정하지 않는다. 반드시 `i18n` 객체의 값을 수정한다.
+- 문구를 추가/수정할 때 `en`과 `kr` 양쪽 모두 업데이트한다. 한쪽만 수정하는 것은 금지.
+- 기본 언어는 `EN`이며, 전환은 `switchLang('en' | 'kr')` 함수를 통해 이루어진다.
 
-### 한/영 전환 (i18n)
-- `<script>` 내부의 `i18n` 객체에 `en`, `kr` 키로 텍스트 관리
-- HTML 요소에 `data-i18n="키이름"` 속성으로 바인딩
-- `switchLang('en')` / `switchLang('kr')` 함수로 전환
-- 기본 언어: EN
+## 반응형 규칙
 
-### 디자인
-- 원본 PDF(`Enkorwithus One pater.pdf`)의 디자인을 그대로 재현
-- 컬러 테마: 올리브(#3E3C1F) 헤더/다크섹션, 골드(#F8E585) 강조, 크림(#FFF9E8) 배경
-- 로고: enkostay 공식 SVG를 흰색으로 변환하여 인라인 삽입
+아래 브레이크포인트를 기준으로 레이아웃을 유지한다. 임의로 브레이크포인트를 추가/변경하지 않는다.
 
-### 반응형
-- PC (900px 이상): PDF 원본과 동일한 레이아웃
-- 태블릿 (768px 이하): 타이틀 숨김, 팀 2열
-- 모바일 (480px 이하): 스탯바 3+2 줄바꿈, 마켓 세로 스택, 팀 2x2
-- 소형 모바일 (360px 이하): 추가 축소
+| 구간 | 조건 | 레이아웃 원칙 |
+|---|---|---|
+| PC | ≥ 900px | 원본 PDF 레이아웃 유지 |
+| 태블릿 | ≤ 768px | 타이틀 숨김, 팀 2열 |
+| 모바일 | ≤ 480px | 스탯바 줄바꿈, 마켓 세로 스택, 팀 2×2 |
+| 소형 모바일 | ≤ 360px | 추가 축소 |
 
-### 섹션 구성 (순서)
-1. 올리브 헤더 (로고 + tagline + Series A 배지 + KR/EN 토글)
-2. 스탯바 ($20.7M, $5.2M, 258%, 18x, 13%+)
-3. Executive Summary (Problem / Solution / Revenue)
-4. Traction (GMV 바 차트, Q1'24 ~ Q1'26)
-5. Unit Economics (CAC $22, LTV $406, ROI 18x, Repurchase 57%)
-6. Market (TAM $113B, SAM $23B, SOM $3B)
-7. Competitive Moats (5개 항목)
-8. The Ask ($7M Series A, 2026 목표, 자금 사용)
-9. Team (CEO, CTO, COO, IT Advisor)
-10. Backed By (투자자 + 파트너)
-11. CEO Interview (YouTube 썸네일 + 재생 버튼, 클릭 시 YouTube 이동)
-12. 하단 스탯바 (40K+ Members, 10K+ Listings, 500K Nights, 7K+ Hosts)
-13. 푸터 (연락처, LinkedIn, enko.kr)
+## 기능 제약
 
-### YouTube 영상
-- 해당 영상(W2nHHiIWuqk)은 소유자가 외부 임베드를 차단함
-- iframe 대신 썸네일 이미지(`hqdefault.jpg`) + 재생 버튼 → 클릭 시 YouTube로 이동하는 방식
+- **YouTube 영상(`W2nHHiIWuqk`)은 외부 임베드가 차단되어 있다.** iframe 임베드로 변경하지 않는다. 반드시 썸네일 이미지(`hqdefault.jpg`) + 재생 버튼 → 클릭 시 YouTube로 이동하는 방식을 유지한다.
 
-## 수정 후 배포 방법
+## 자산 수정 규칙
 
-```bash
-# 1. 레포 클론 (최초 1회)
-git clone https://github.com/enko-jake/enkorwithus-ir.git
-cd enkorwithus-ir
+- SVG 로고는 `index.html` 내부에 인라인으로 들어 있다. 로고 변경 시 별도 파일이 아닌 HTML 내부 SVG 코드를 직접 수정한다.
+- 로고 색상 등 변경 시 인라인 SVG의 `fill` / `stroke` 속성을 수정한다.
 
-# 2. index.html 수정
+## 배포 규칙
 
-# 3. 커밋 & 푸시
-git add index.html
-git commit -m "변경 내용 설명"
-git push origin main
+- 배포는 반드시 **`/update-ir` 스킬**로 수행한다. 수동 `git add/commit/push`는 사용하지 않는다.
+- main 브랜치 직접 푸시 방식이며, PR/브랜치 전략 없이 동작한다.
+- 푸시 후 1~2분 내 GitHub Pages에 자동 반영된다.
 
-# push 후 1~2분 내에 자동 배포됨
-```
+## 보안 규칙 (매우 중요)
 
-## 수정 시 주의사항
-
-- `data-i18n` 속성이 있는 요소의 텍스트를 직접 수정하면 안 됨. `<script>` 내부 `i18n` 객체의 `en`/`kr` 값을 수정해야 함.
-- 수치나 텍스트 변경 시 `en`, `kr` 양쪽 모두 수정할 것.
-- SVG 로고는 인라인이므로 변경 시 HTML 내부의 SVG 코드를 직접 수정해야 함.
+- GitHub PAT는 프로젝트 루트의 `pat.txt`에 저장되며, **절대** 커밋/푸시/공유하지 않는다.
+- `pat.txt`는 `.gitignore`에 반드시 포함되어 있어야 한다. 작업 전 확인하고, 빠져 있으면 먼저 추가한다.
+- 커밋 직전 `git status`에 `pat.txt`가 보이면 즉시 작업을 중단하고 원인을 파악한다.
+- 푸시 명령어의 토큰 포함 URL(`https://<token>@github.com/...`)을 로그/출력/히스토리에 남기지 않는다.
