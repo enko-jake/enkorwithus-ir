@@ -46,10 +46,12 @@ TOKEN=$(cat pat.txt | tr -d '\n' | tr -d ' ')
 git add -A
 git commit -m "<요약 메시지>"
 git push "https://${TOKEN}@github.com/enko-jake/enkorwithus-ir.git" main
+git fetch origin
 ```
 
 - 푸시 시 URL에 토큰이 들어가므로, 출력에서 토큰 부분은 마스킹하거나 명령어 자체를 사용자에게 보여주지 말 것
 - 사용자에게는 "푸시 중..." 정도로만 안내
+- 푸시 후 `git fetch origin`을 실행하여 로컬 remote tracking ref를 동기화한다 (토큰 URL로 푸시하면 `origin/main`이 자동 갱신되지 않기 때문)
 
 ### 5. 결과 안내
 
