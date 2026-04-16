@@ -204,6 +204,21 @@
     .footer-links { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 4px; }
     .footer-links a { color: var(--gold); text-decoration: none; }
 
+    /* ── News Board ── */
+    .news-board { margin-top: 12px; display: flex; flex-direction: column; gap: 0; }
+    .news-card {
+      display: flex; flex-direction: column; gap: 4px;
+      padding: 14px 8px; border-bottom: 1px solid rgba(0,0,0,0.08);
+      text-decoration: none; color: var(--text); transition: background 0.2s; border-radius: 4px;
+    }
+    .news-card:first-child { border-top: 1px solid rgba(0,0,0,0.08); }
+    .news-card, .news-card:visited { color: var(--text); }
+    .news-card:hover { background: rgba(0,0,0,0.03); }
+    .news-title { font-size: 14px; color: var(--text); line-height: 1.5; font-weight: 600; }
+    .news-meta { font-size: 11px; color: var(--text-light); display: flex; gap: 8px; align-items: center; }
+    .news-meta .news-date { color: var(--text-light); }
+    .news-meta .news-source { color: var(--olive); font-weight: 600; }
+
     /* ── Video Section (from planning doc) ── */
     .video-wrap {
       margin-top: 12px;
@@ -402,6 +417,10 @@
       .video-wrap { border-radius: 6px; }
       .video-play { width: 56px; height: 56px; }
       .video-play svg { width: 18px; height: 22px; }
+
+      /* News */
+      .news-card { padding: 12px 4px; }
+      .news-title { font-size: 13px; }
 
       /* Bottom Stats */
       .bottom-stats .bs { padding: 12px 4px; }
@@ -614,6 +633,13 @@
       <p class="backed-line"><span class="b-label">Partners:</span> <span data-i18n="partners"></span></p>
     </div>
 
+    <!-- CTA -->
+    <div class="cta-box fade-in">
+      <h3 data-i18n="ctaTitle"></h3>
+      <p data-i18n="ctaSub"></p>
+      <a href="#" onclick="openDeckModal(); return false;" class="cta-btn" data-i18n="ctaBtn"></a>
+    </div>
+
     <!-- CEO Interview -->
     <div class="sec-title" data-i18n="secVideo"></div>
     <a href="https://www.youtube.com/watch?v=W2nHHiIWuqk&t=222s" target="_blank" rel="noopener" class="video-wrap fade-in" style="display:block; text-decoration:none;">
@@ -624,12 +650,9 @@
       </button>
     </a>
 
-    <!-- CTA -->
-    <div class="cta-box fade-in">
-      <h3 data-i18n="ctaTitle"></h3>
-      <p data-i18n="ctaSub"></p>
-      <a href="#" onclick="openDeckModal(); return false;" class="cta-btn" data-i18n="ctaBtn"></a>
-    </div>
+    <!-- News Board -->
+    <div class="sec-title" data-i18n="secNews"></div>
+    <div class="news-board fade-in" id="newsBoard"></div>
 
   </div><!-- .page -->
 
@@ -667,6 +690,33 @@
     }
     function closeDeckModal() {
       document.getElementById('deckModal').classList.remove('active');
+    }
+
+    const newsItems = [
+      { date: "2025.07", source: "ET News", title: "엔코위더스, 구글 AI 날개 달고 월 거래액 14억원 돌파", titleEn: "Hits ₩1.4B Monthly GMV with Google AI-Powered Operations", url: "https://www.etnews.com/20250703000022" },
+      { date: "2025.05", source: "Unicorn Factory", title: "대학가도 아닌데 젊은 외국인 우르르…'빈방 없어요'", titleEn: "Young Expats Flooding In — 'No Vacancy' at Enkostay Housing", url: "https://www.unicornfactory.co.kr/article/2025042516081282152" },
+      { date: "2024.10", source: "Chosun Biz", title: "엔코위더스, 외국인 주거 플랫폼으로 시리즈 A 투자 유치", titleEn: "Enkorwithus Closes Series A to Scale Expat Housing Platform", url: "https://biz.chosun.com/industry/business-venture/2024/10/22/QRY3QECBUJEDFHQ64ESTLVAWEA/" },
+      { date: "2023.08", source: "Korea JoongAng Daily", title: "엔코위더스, 외국인 주거 플랫폼으로 커뮤니티를 잇다", titleEn: "Enkorwithus Brings Foreigners Together Through Housing Platform", url: "https://koreajoongangdaily.joins.com/news/2023-08-15/national/kcampus/INTERVIEW-Enkorwithus-aims-to-bring-foreigners-together-through-housing-platform/1846016" },
+    ];
+
+    function renderNews() {
+      const board = document.getElementById('newsBoard');
+      if (!board) return;
+      const section = board.previousElementSibling; // sec-title
+      if (newsItems.length === 0) {
+        board.style.display = 'none';
+        if (section) section.style.display = 'none';
+        return;
+      }
+      board.style.display = '';
+      if (section) section.style.display = '';
+      board.innerHTML = newsItems.map(item => {
+        const title = currentLang === 'en' ? item.titleEn : item.title;
+        return `<a href="${item.url}" target="_blank" rel="noopener" class="news-card">
+          <span class="news-title">${title}</span>
+          <span class="news-meta"><span class="news-source">${item.source}</span><span class="news-date">${item.date}</span></span>
+        </a>`;
+      }).join('');
     }
 
     const i18n = {
@@ -713,6 +763,7 @@
         partners: "Seoul Metropolitan Gov't | Korea Tourism Org. | Sogang Univ. | Hanyang Univ. +10 Top Universities",
         bsNights: "Nights Booked",
         secVideo: "CEO INTERVIEW",
+        secNews: "NEWS",
         ctaTitle: "Interested in Enkorwithus?",
         ctaSub: "Get our full investment deck with detailed financials and growth strategy",
         ctaBtn: "Request IR Deck",
@@ -762,6 +813,7 @@
         partners: "서울특별시 | 한국관광공사 | 서강대학교 | 한양대학교 +10 주요 대학",
         bsNights: "숙박일 수",
         secVideo: "CEO 인터뷰",
+        secNews: "소식",
         ctaTitle: "엔코위더스에 관심이 있으신가요?",
         ctaSub: "상세 재무 데이터와 성장 전략이 담긴 IR 덱을 보내드립니다",
         ctaBtn: "IR 덱(Investment Deck) 요청하기",
@@ -780,6 +832,7 @@
         const key = el.dataset.i18n;
         if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
       });
+      renderNews();
     }
 
     switchLang('en');
